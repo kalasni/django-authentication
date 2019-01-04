@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 
 
 def home(request):
@@ -17,3 +20,12 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
+
+
+@login_required
+def secret_page(request):
+    return render(request, 'secret_page.html')
+
+
+class SecretPage(LoginRequiredMixin, TemplateView):
+    template_name = 'secret_page.html'
